@@ -6,12 +6,12 @@
     <property name="classes.dir" location="dist" />
     <property name="build.dir" location="bin" />
     <property name="dist.dir" location="dist" />
-    <property name="lib.dir" location="/usr/share/java/" />
+    <property name="lib.dir" location="." />
     <property name="reports.xml.dir" location="docs" />
     <property name="reports.html.dir" location="docs" />
     <property name="reports.dir" location="docs" />
 	<property name="test.src.dir" location="tests" />
-	<property name="report.dir" location="report" />
+
 
     <path id="build.classpath">
         <fileset dir="${lib.dir}">

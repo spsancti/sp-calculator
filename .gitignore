@@ -11,7 +11,8 @@
 .mtj.tmp/
 
 # Package Files #
-*.jar
+bin/*.jar
+dist/*.jar
 *.war
 *.ear
 *.zip
@@ -25,3 +26,4 @@ hs_err_pid*
 docs/
 report/
 dist/
+bin/
