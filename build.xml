@@ -3,11 +3,15 @@
     <!-- Sets variables which can later be used. -->
     <!-- The value of a property is accessed via ${} -->
     <property name="src.dir" location="src" />
+    <property name="classes.dir" location="dist" />
     <property name="build.dir" location="bin" />
     <property name="dist.dir" location="dist" />
     <property name="lib.dir" location="/usr/share/java/" />
-    <property name="docs.dir" location="docs" />
-
+    <property name="reports.xml.dir" location="docs" />
+    <property name="reports.html.dir" location="docs" />
+    <property name="reports.dir" location="docs" />
+	<property name="test.src.dir" location="tests" />
+	<property name="report.dir" location="report" />
 
     <path id="build.classpath">
         <fileset dir="${lib.dir}">
@@ -15,26 +19,65 @@
         </fileset>
     </path>
 
-    <!-- Deletes the existing build, docs and dist directory-->
-    <target name="clean">
-        <delete dir="${build.dir}" />
-        <delete dir="${docs.dir}" />
-        <delete dir="${dist.dir}" />
-    </target>
 
-    <!-- Creates the  build, docs and dist directory-->
-    <target name="makedir">
-        <mkdir dir="${build.dir}" />
-        <mkdir dir="${docs.dir}" />
-        <mkdir dir="${dist.dir}" />
-    </target>
+<target name="init">
+    <mkdir dir="${classes.dir}" />
+    <mkdir dir="${reports.xml.dir}" />
+    <mkdir dir="${reports.html.dir}" />
+</target>
 
-    <!-- Compiles the java code (including the usage of library for JUnit -->
-    <target name="compile" depends="clean, makedir">
-        <javac srcdir="${src.dir}" destdir="${build.dir}" classpathref="build.classpath">
-        </javac>
+<target name="compile" depends="init">
+    <javac srcdir="${src.dir}" destdir="${classes.dir}" debug="yes" includeantruntime="false">
+        <classpath refid="build.classpath" />
+    </javac>
+    <javac srcdir="${test.src.dir}" destdir="${classes.dir}" debug="yes" includeantruntime="false">
+        <classpath refid="build.classpath" />
+    </javac>
+</target>
 
-    </target>
+<target name="test" depends="init,compile">
+    <junit fork="yes" dir="${basedir}" failureProperty="test.failed">
+        <!--
+                Note the classpath order: instrumented classes are before the
+                original (uninstrumented) classes.  This is important.
+        -->
+
+        <classpath location="${classes.dir}" />
+
+        <!--
+                The instrumented classes reference classes used by the
+                Cobertura runtime, so Cobertura and its dependencies
+                must be on your classpath.
+        -->
+        <classpath refid="build.classpath" />
+
+        <formatter type="xml" />
+        <test name="${testcase}" todir="${reports.xml.dir}" if="testcase" />
+        <batchtest todir="${reports.xml.dir}" unless="testcase">
+            <fileset dir="${test.src.dir}">
+                <include name="**/*test*.java" />
+            </fileset>
+        </batchtest>
+    </junit>
+
+    <!-- JUnit Report in HTML -->
+    <junitreport todir="${reports.xml.dir}">
+        <fileset dir="${reports.xml.dir}">
+            <include name="TEST-*.xml" />
+        </fileset>
+        <report format="frames" todir="${reports.html.dir}" />
+    </junitreport>
+
+</target>
+
+
+<target name="clean" description="Remove all files created by the build/test process.">
+    <delete dir="${classes.dir}" />
+    <delete dir="${reports.dir}" />
+    <delete dir="${dist.dir}" />
+    <delete dir="${reports.html.dir}" />
+    <delete dir="${reports.xml.dir}" />
+</target>
 
     <!--Creates the deployable jar file  -->
     <target name="jar" depends="compile">
@@ -43,10 +86,6 @@
                 <attribute name="Main-Class" value="CLayout" />
             </manifest>
         </jar>
-    </target>
-
-    <target name="main" depends="compile, jar">
-        <description>Main target</description>
     </target>
 
 </project>
