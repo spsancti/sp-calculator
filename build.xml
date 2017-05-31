@@ -7,9 +7,9 @@
     <property name="build.dir" location="bin" />
     <property name="dist.dir" location="dist" />
     <property name="lib.dir" location="." />
-    <property name="reports.xml.dir" location="docs" />
-    <property name="reports.html.dir" location="docs" />
-    <property name="reports.dir" location="docs" />
+    <property name="reports.xml.dir" location="reports" />
+    <property name="reports.html.dir" location="reports" />
+    <property name="reports.dir" location="reports" />
 	<property name="test.src.dir" location="tests" />
 
 
