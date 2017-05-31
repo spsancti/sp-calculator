@@ -17,7 +17,7 @@ At the moment it can:
 
 The project is distributed AS IS. No binaries provided. 
 
-You will need Java and Ant installed. When you have this, simply run ```ant jar``` and hope for binary calc.jar in bin/ directory.
+You will need Java and Ant installed. When you have this, simply run ```ant jar``` and hope for binary calc.jar in dist/ directory.
 
 If you want to test it, run ```ant test```.
 
