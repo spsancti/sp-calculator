@@ -13,6 +13,16 @@ At the moment it can:
 *  Square and percent
 *  Memory operations
 
+## Installing
+
+The project is distributed AS IS. No binaries provided. 
+
+You will need Java and Ant installed. When you have this, simply run ```ant jar``` and hope for binary calc.jar in bin/ directory.
+
+If you want to test it, run ```ant test```.
+
+If you want just compile it, run ```ant compile```.
+
 ## Possible problems
 
 It can start on your machine, however, it can decide not to start. 
